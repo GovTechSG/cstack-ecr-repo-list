@@ -1,0 +1,7 @@
+include:
+  - project: cstack-reference/ci-pipeline
+    ref: master
+    file: .gitlab-ci.yml
+  - project: cstack-reference/ci-pipeline
+    ref: master
+    file: sonarqube-scan.yml

@@ -1,0 +1,17 @@
+html, body {
+  height: 100%;
+}
+
+table td.sha {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+span.badge {
+  font-size: 0.9rem;
+}
+
+
+.tooltip-inner {
+  max-width: 700px;
+}

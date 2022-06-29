@@ -1,0 +1,39 @@
+<div class="table-responsive image-table">
+    <table id="table-{{CSSSafeString imageDetails.[0].repositoryName}}-{{is-image-table}}" class="table table-striped table-bordered table-hover medium">
+            <thead>
+                <tr>
+                    <th>Digest</th>
+                    <th>Pushed At</th>
+                    <th>Last Recorded Pulled Time <i class="fa-solid fa-circle-info" data-toggle="tooltip" data-html="true" title="Amazon ECR refreshes the last image pull timestamp at least once every 24 hours.<br/>For example, if you pull an image once a day then the lastRecordedPullTime timestamp will indicate the exact time that the image was last pulled. However, if you pull an image once an hour, because Amazon ECR refreshes the lastRecordedPullTime timestamp at least once every 24 hours, the result may not be the exact time that the image was last pulled."></i></th>
+                    <th>Size</th>
+                    <th>Tags</th>
+                    {{#if is-image-table}}
+                    <th></th>
+                    {{/if}}
+                </tr>
+            </thead>
+        <tbody>
+            {{#each imageDetails}}
+            {{#this}}
+            <tr id="tr-{{#replace-colon}}{{imageDigest}}{{/replace-colon}}">
+                <td class="sha">{{imageDigest}}</td>
+                <td>{{dateFormatter imagePushedAt}}</td>
+                <td>{{#if lastRecordedPullTime}}{{dateFormatter lastRecordedPullTime}}{{else}}-{{/if}}</td>
+                <td>{{humanFileSize imageSizeInBytes false}}</td>
+                <td>
+                    {{#each imageTags}}
+                    <span class="badge badge-primary font-weight-normal">{{this}}</span>
+                    {{/each}}
+                </td>
+                {{#if ../is-image-table}}
+                <td>
+                    <input type="checkbox" class="checkbox-{{CSSSafeString repositoryName}}"
+                        id="sha-{{@index}}-{{CSSSafeString repositoryName}}-checkbox" value="{{imageDigest}}" />
+                </td>
+                {{/if}}
+            </tr>
+            {{/this}}
+            {{/each}}
+        </tbody>
+    </table>
+</div>

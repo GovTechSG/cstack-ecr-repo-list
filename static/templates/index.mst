@@ -1,20 +1,31 @@
-<h1>Docker Repositories ({{numberOfRepos}})</h1>
-<p>This is a list of repositories in our <a href="https://aws.amazon.com/ecr/">Amazon ECR</a> registry.
-    Click on a repository name to see the list of containers in that repo (including shasum,
+
+<p>This is a list of your repositories in the Container Stack <a href="https://aws.amazon.com/ecr/">Amazon ECR</a> registry.
+    Click on a repository name to see the list of images in that repo (including shasum,
     created data, size and labels) and some details about the repo.</p>
 
-<div id="accordion">
+<p>Current CStack naming conventions information:</br>
+CStack repository name are named as <code>$SUBGROUP/$PROJECT_NAME</code> which can be referenced from your GitLab projects.</br>
+CStack default image tags are tagged as <code>$CI_COMMIT_SHA-$CI_PIPELINE_ID</code> which can be referenced from the GitLab CI pipeline info.
+</p>
+
+<p>You have <code>{{numberOfRepos}}</code> repositories in your namespace.</p>
+{{#if numberOfRepos}}
+<!-- Search repo -->
+  <input class="form-control mb-3" type="text" id="search-repo" placeholder="Search repositories by name" aria-label="Search">
+
+<div id="accordion" class="mb-5">
 {{#each repositories}}
 {{#this}}
-<a href="#{{CSSSafeString repositoryName}}" id="anchor"></a>
+<div id="accordion-{{CSSSafeString repositoryName}}">
+  <a href="#{{CSSSafeString repositoryName}}" id="anchor"></a>
   <div class="card" class="row">
     <div class="card-header" id="header-{{CSSSafeString repositoryName}}">
       <h5 class="mb-0">
         <button id="{{CSSSafeString repositoryName}}" class="btn btn-link" data-toggle="collapse" data-target="#details-{{CSSSafeString repositoryName}}" aria-expanded="true" aria-controls="{{@key}}">
             {{repositoryName}}
         </button>
-        <span id="imageCountBadge-{{CSSSafeString repositoryName}}" class="badge badge-pill badge-primary"></span>
-        <span id="imageSizeBadge-{{CSSSafeString repositoryName}}" class="badge badge-pill badge-success"></span>
+        <span id="imageCountBadge-{{CSSSafeString repositoryName}}" class="badge badge-pill badge-primary font-weight-normal"></span>
+        <span id="imageSizeBadge-{{CSSSafeString repositoryName}}" class="badge badge-pill badge-success font-weight-normal"></span>
       </h5>
     </div>
     <div id="details-{{CSSSafeString repositoryName}}" class="collapse" aria-labelledby="header-{{CSSSafeString repositoryName}}" data-parent="#accordion" data-repoName="{{repositoryName}}">
@@ -26,13 +37,13 @@
                 <td>
                     <div class="input-group input-group-sm mb-3">
                       <div class="input-group-prepend">
-                         <span class="input-group-text" id="inputGroup-sizing-sm">
-                             <button class="btn btn-link btn-sm" alt="Copy to clipboard" data-clipboard-target="#uri-{{CSSSafeString repositoryName}}">
-                                 <span class="oi oi-clipboard" title="clipboard" aria-hidden="true"></span>
-                             </button>
-                         </span>
+                        <span class="input-group-text" id="inputGroup-sizing-sm">
+                            <button class="btn btn-link btn-sm" alt="Copy to clipboard" data-clipboard-target="#uri-{{CSSSafeString repositoryName}}">
+                                <span class="oi oi-clipboard" title="clipboard" aria-hidden="true"></span>
+                            </button>
+                        </span>
                       </div>
-                        <input type="text" class="form-control" id="uri-{{CSSSafeString repositoryName}}" value="{{repositoryUri}}">
+                        <input type="text" class="form-control" id="uri-{{CSSSafeString repositoryName}}" value="{{repositoryUri}}" readonly>
                     </div>
                 </td>
             </tr>
@@ -44,6 +55,12 @@
       </div>
     </div>
   </div>
+</div>
 {{/this}}
 {{/each}}
 </div>
+{{else}}
+<div>
+You have no repositories. Please contact the CStack team.
+</div>
+{{/if}}
